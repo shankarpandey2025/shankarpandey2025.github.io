@@ -111,6 +111,15 @@ h3{font-size:1.15rem;margin:0}
 .event-photos.single a{aspect-ratio:3/4}
 .event-photos img{object-position:center 30%}
 .empty{color:var(--muted);font-style:italic;margin-top:20px}
+header nav{-webkit-mask-image:linear-gradient(to right,transparent 0,#000 14px,#000 calc(100% - 36px),transparent 100%);mask-image:linear-gradient(to right,transparent 0,#000 14px,#000 calc(100% - 36px),transparent 100%)}
+@media (min-width:1100px){header nav{-webkit-mask-image:none;mask-image:none}}
+.pager{display:flex;justify-content:space-between;gap:12px;margin-top:40px;padding-top:20px;border-top:1px solid var(--line)}
+.pager a{display:grid;gap:2px;padding:12px 16px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--fg);text-decoration:none;min-width:0;max-width:48%}
+.pager a:hover{border-color:var(--crimson)}
+.pager a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.pager .next{text-align:right;margin-left:auto}
+.pager-dir{font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.pager-name{font-weight:700;color:var(--crimson)}
 .explore{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:12px}
 .btn{display:block;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-radius:8px;color:var(--fg);text-decoration:none;font-weight:500}
 .btn:hover{border-color:var(--crimson);color:var(--crimson)}
@@ -559,10 +568,23 @@ var EVENTS = [
     if(ids.indexOf(id)<0) id="about";
     cur=id;
     ids.forEach(function(x){var el=document.getElementById(x); if(el) el.hidden=(x!==id)});
-    document.querySelectorAll("#menu a").forEach(function(a){
-      if(a.getAttribute("href")==="#"+id){a.setAttribute("aria-current","page");a.scrollIntoView({block:"nearest",inline:"nearest"})}
-      else a.removeAttribute("aria-current");
+    var links=[].slice.call(document.querySelectorAll("#menu a")), nav=document.querySelector("nav"), idx=0;
+    links.forEach(function(a,i){
+      if(a.getAttribute("href")==="#"+id){
+        a.setAttribute("aria-current","page"); idx=i;
+        var left=a.getBoundingClientRect().left-nav.getBoundingClientRect().left+nav.scrollLeft-(nav.clientWidth-a.offsetWidth)/2;
+        try{nav.scrollTo({left:Math.max(0,left),behavior:"smooth"})}catch(_){nav.scrollLeft=Math.max(0,left)}
+      } else a.removeAttribute("aria-current");
     });
+    var sec=document.getElementById(id);
+    if(sec){
+      var old=sec.querySelector(".pager"); if(old) old.remove();
+      var pg=document.createElement("nav"); pg.className="pager"; pg.setAttribute("aria-label",lang==="ne"?"खण्डहरू":"Sections");
+      var mk=function(l,cls,label){var a=document.createElement("a"); a.href=l.getAttribute("href"); a.className=cls; a.innerHTML='<span class="pager-dir">'+label+'</span><span class="pager-name"></span>'; a.querySelector(".pager-name").textContent=l.textContent; return a};
+      if(idx>0) pg.appendChild(mk(links[idx-1],"prev",lang==="ne"?"\u2190 अघिल्लो":"\u2190 Previous")); else pg.appendChild(document.createElement("span"));
+      if(idx<links.length-1) pg.appendChild(mk(links[idx+1],"next",lang==="ne"?"अर्को \u2192":"Next \u2192"));
+      sec.appendChild(pg);
+    }
     window.scrollTo(0,0);
   }
   function renderEvents(){
