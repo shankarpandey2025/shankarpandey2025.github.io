@@ -93,6 +93,24 @@ h3{font-size:1.15rem;margin:0}
 .paper-venue{color:var(--muted);font-size:.95rem}
 .paper > p:not([class]){text-align:justify;hyphens:auto}
 .pill.ghost{overflow-wrap:anywhere}
+.bar{justify-content:space-between}
+.lang select{font:inherit;font-size:.9rem;padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--fg);cursor:pointer;max-width:46vw}
+.lang select:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.events{display:grid;gap:20px;margin-top:20px}
+.event{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:20px;display:grid;gap:8px}
+.event-date{font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--crimson);font-variant-numeric:tabular-nums}
+.event h3{font-size:1.2rem;line-height:1.35;text-wrap:balance}
+.event-place{color:var(--blue);font-weight:500;margin:0}
+.event-text{margin:0;max-width:70ch;text-align:justify;hyphens:auto}
+.event-photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-top:6px}
+.event-photos a{display:block;border-radius:8px;overflow:hidden;aspect-ratio:4/3;background:var(--tint);max-width:100%}
+.event-photos img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .2s}
+.event-photos a:hover img{transform:scale(1.04)}
+.event-photos.single{grid-template-columns:minmax(0,340px)}
+.event-photos.single a{aspect-ratio:3/4}
+.event-photos img{object-position:center 30%}
+.empty{color:var(--muted);font-style:italic;margin-top:20px}
 .explore{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:12px}
 .btn{display:block;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-radius:8px;color:var(--fg);text-decoration:none;font-weight:500}
 .btn:hover{border-color:var(--crimson);color:var(--crimson)}
@@ -110,19 +128,37 @@ footer{border-top:1px solid var(--line);padding-block:24px;color:var(--muted);fo
 <body>
 <header>
   <div class="wrap">
-    <div class="bar"><a class="brand" href="#about">Shankar <span>Pandey</span></a></div>
+    <div class="bar"><a class="brand" href="#about" id="brand">Shankar <span>Pandey</span></a>
+      <label class="lang"><span class="sr" id="lang-label">Language</span>
+        <select id="lang" aria-labelledby="lang-label">
+          <option value="en">English</option>
+          <option value="ne">नेपाली</option>
+          <optgroup label="More languages (Google Translate)">
+            <option value="hi">हिन्दी</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="pt">Português</option>
+            <option value="zh-CN">中文</option>
+            <option value="ja">日本語</option>
+            <option value="ko">한국어</option>
+            <option value="ar">العربية</option>
+            <option value="ru">Русский</option>
+          </optgroup>
+        </select></label></div>
     <nav aria-label="Sections"><ul id="menu">
-      <li><a href="#about">About</a></li>
-      <li><a href="#education">Education</a></li>
-      <li><a href="#experience">Experience</a></li>
-      <li><a href="#journey">Journey to USA</a></li>
-      <li><a href="#research">Research</a></li>
-      <li><a href="#interests">Interests</a></li>
-      <li><a href="#media">Media</a></li>
-      <li><a href="#awards">Awards</a></li>
-      <li><a href="#publications">Publications</a></li>
-      <li><a href="#cv">CV</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <li><a href="#about" data-ne="बारेमा">About</a></li>
+      <li><a href="#education" data-ne="शिक्षा">Education</a></li>
+      <li><a href="#experience" data-ne="अनुभव">Experience</a></li>
+      <li><a href="#journey" data-ne="अमेरिका यात्रा">Journey to USA</a></li>
+      <li><a href="#research" data-ne="अनुसन्धान">Research</a></li>
+      <li><a href="#interests" data-ne="रुचि">Interests</a></li>
+      <li><a href="#media" data-ne="मिडिया">Media</a></li>
+      <li><a href="#events" data-ne="कार्यक्रम">Events</a></li>
+      <li><a href="#awards" data-ne="पुरस्कार">Awards</a></li>
+      <li><a href="#publications" data-ne="प्रकाशन">Publications</a></li>
+      <li><a href="#cv" data-ne="CV">CV</a></li>
+      <li><a href="#contact" data-ne="सम्पर्क">Contact</a></li>
     </ul></nav>
   </div>
 </header>
@@ -243,6 +279,12 @@ footer{border-top:1px solid var(--line);padding-block:24px;color:var(--muted);fo
   </ul>
 </section>
 
+<section id="events" hidden>
+  <h2>Events</h2>
+  <p class="lead">Conferences, talks, achievements, and other moments from my journey.</p>
+  <div class="events" data-events></div>
+  <p class="empty" data-events-empty>New events and photos will appear here soon.</p>
+</section>
 <section id="awards" hidden>
   <h2>Awards and Scholarships</h2>
   <ul class="timeline">
@@ -300,34 +342,301 @@ footer{border-top:1px solid var(--line);padding-block:24px;color:var(--muted);fo
 
 <footer><div class="wrap">© 2026 Shankar Pandey · shankarpandey.com <span class="foot-links"><a href="https://www.linkedin.com/in/shankar-pandey-3418b9236" target="_blank" rel="noopener">LinkedIn</a><a href="https://scholar.google.com/citations?user=_ulJkX8AAAAJ&amp;hl=en" target="_blank" rel="noopener">Google Scholar</a></span></div></footer>
 
+<template id="tpl-ne">
+<section id="about">
+  <div class="hero">
+    <div>
+      <p class="namaste">नमस्ते<small>तपाईंलाई हार्दिक स्वागत छ</small></p>
+      <p class="welcome">शंकर पाण्डेको व्यक्तिगत वेबसाइटमा स्वागत छ।</p>
+      <p class="tagline">सगरमाथा <span class="alt">(8,848.86 मि.)</span> को देश हिमालयदेखि समुद्र सतह <span class="alt">(0 मि.)</span> सम्म।</p>
+    </div>
+    <div class="photo"><img data-photo alt="शंकर पाण्डे"></div>
+  </div>
+  <div class="open">
+    <p><strong>अवसरका लागि उपलब्ध:</strong> अप्टिमाइजेसन, AI/ML र अपरेसन्स रिसर्च क्षेत्रमा <strong>Summer 2027 इन्टर्नसिप</strong> खोजिरहेको छु।</p>
+    <div class="open-actions"><a class="pill" href="#cv">मेरो CV हेर्नुहोस्</a><a class="pill ghost" href="#contact">सम्पर्क गर्नुहोस्</a></div>
+  </div>
+  <p class="eyebrow">मेरो बारेमा</p>
+  <h2>नमस्ते, म शंकर हुँ</h2>
+  <p class="lead">म <a class="place" href="https://www.google.com/maps/search/?api=1&amp;query=Burtibang%2C%20Baglung%2C%20Nepal" target="_blank" rel="noopener" title="गुगल म्यापमा बुर्तिबाङ हेर्नुहोस्">बुर्तिबाङ, बागलुङ, नेपाल</a>को शंकर पाण्डे हुँ। हाल म साउथ फ्लोरिडा विश्वविद्यालय (University of South Florida) मा इन्डस्ट्रियल एन्ड म्यानेजमेन्ट सिस्टम्स इन्जिनियरिङमा पीएचडी गरिरहेको छु। मेरो अनुसन्धान आर्टिफिसियल इन्टेलिजेन्स, मेसिन लर्निङ, अपरेसन्स रिसर्च, ठूला स्तरका अप्टिमाइजेसन र बहुउद्देश्यीय (multi-objective) अप्टिमाइजेसनमा केन्द्रित छ, जसको प्रयोग क्यान्सर उपचार योजनामा हुन्छ।</p>
+  <p class="lead">मेरो जन्म सन् 1995 मा भएको हो। म सामाजिक सद्भाव र न्यानो, मेहनती मानिसहरूका लागि चिनिने हिमालयको एक दुर्गम गाउँमा हुर्किएँ। शिक्षालाई महत्त्व दिने एक साधारण परिवारमा मेरो पालनपोषण भयो। मेरो बुबा माध्यमिक विद्यालयका शिक्षक हुनुहुन्छ, र मेरी आमाले शिक्षकका रूपमा आफ्नो करियर सुरु गर्नुभयो र अहिले आफ्नै काम गर्नुहुन्छ। त्यो पालनपोषण र वरपरको समुदायले आज पनि मलाई आकार दिइरहेको छ।</p>
+  <p class="eyebrow">मेरो बारेमा थप जान्नुहोस्</p>
+  <div class="explore">
+    <a class="btn" href="#education">शिक्षा</a>
+    <a class="btn" href="#experience">व्यावसायिक अनुभव</a>
+    <a class="btn" href="#journey">अमेरिकासम्मको यात्रा</a>
+    <a class="btn" href="#research">अनुसन्धान रुचि</a>
+    <a class="btn" href="#awards">पुरस्कार तथा छात्रवृत्ति</a>
+  </div>
+</section>
+
+<section id="education" hidden>
+  <h2>शिक्षा</h2>
+  <p class="lead">मैले नर्सरीदेखि पीएचडीसम्मको सम्पूर्ण शिक्षा छात्रवृत्तिमा पूरा गरेँ।</p>
+  <ul class="timeline">
+    <li><span class="when">सन् 2025 को गर्मीदेखि हालसम्म</span><h3>इन्डस्ट्रियल एन्ड म्यानेजमेन्ट सिस्टम्स इन्जिनियरिङमा पीएचडी</h3>
+      <p>साउथ फ्लोरिडा विश्वविद्यालय, ट्याम्पा, फ्लोरिडा, अमेरिका · सुपरिवेक्षक: डा. हादी चर्खगर्द (Dr. Hadi Charkhgard)</p>
+      <p>सन् 2025 को गर्मीमा म इन्डस्ट्रियल एन्ड म्यानेजमेन्ट सिस्टम्स इन्जिनियरिङमा पीएचडी गर्न साउथ फ्लोरिडा विश्वविद्यालयमा आबद्ध भएँ। अन्तर्राष्ट्रिय शैक्षिक वातावरणमा यो मेरो पहिलो अनुभव हो, र यसले मलाई धेरै ठूलो स्तरको अनुसन्धानको ढोका खोलिदिएको छ।</p>
+      <p>मेरो काम अप्टिमाइजेसन र आर्टिफिसियल इन्टेलिजेन्सको संगममा छ। हाल म ठूला स्तरका अप्टिमाइजेसन समस्या, बहुउद्देश्यीय अप्टिमाइजेसन, र AI तथा मेसिन लर्निङ विधिहरूमा काम गरिरहेको छु, जसको प्रयोग क्यान्सर उपचार योजनामा हुन्छ। AI र अप्टिमाइजेसनले संसारले वास्तविक समस्या समाधान गर्ने तरिका कसरी बदलिरहेका छन् भन्ने कुरा म दिनहुँ देख्छु, र त्यो अग्रभागमा सिक्न र योगदान दिन पाउँदा म आभारी छु।</p></li>
+    <li><span class="when">सन् 2020 देखि 2022 · कुल प्राप्तांक 84.95%</span><h3>मेकानिकल इन्जिनियरिङ (डिजाइन एन्ड म्यानुफ्याक्चरिङ) मा एमएससी</h3>
+      <p>थापाथली क्याम्पस, इन्जिनियरिङ अध्ययन संस्थान (IOE), त्रिभुवन विश्वविद्यालय, काठमाडौं</p>
+      <p>स्नातक तह पूरा गरेपछि मैले IOE को स्नातकोत्तर प्रवेश परीक्षामार्फत फेरि छात्रवृत्ति पाएँ र डिप्लोमाबाट इन्जिनियरिङ यात्रा सुरु गरेको थापाथली क्याम्पसमै फर्किएँ। दुई वर्षे स्नातकोत्तर कार्यक्रमले मलाई इन्जिनियरिङ सिक्नेबाट अनुसन्धान गर्नेतर्फ लग्यो, जसमा सोलिड मेकानिक्स, मेकानिकल सिस्टम तथा कम्पोनेन्ट डिजाइन, र उत्पादन प्रक्रिया तथा प्रविधिको उन्नत अध्ययन समावेश थियो। यसले कुनै पार्ट कसरी डिजाइन गरिन्छ, भार पर्दा कस्तो व्यवहार गर्छ, र कसरी बनाइन्छ र नापिन्छ भन्ने सिकायो।</p>
+      <p>मेरो शोध साना जलविद्युत्, विशेषगरी गुरुत्वीय पानी भोर्टेक्स विद्युत् गृह (gravitational water vortex power plant) मा केन्द्रित थियो। यो प्रविधिले पानीको भुमरीबाट बिजुली उत्पादन गर्छ र धेरै कम हेडमा पनि काम गर्छ, जसले साना खोला र कुलो भएका नेपालका ग्रामीण समुदायका लागि यसलाई आशालाग्दो बनाउँछ। हाम्रो टोलीले नयाँ प्रोपेलर-प्रकारको रनर र मिल्दो बेलनाकार बेसिन डिजाइन गर्‍यो, त्यसपछि कम्प्युटेसनल फ्लुइड डाइनामिक्स (CFD) प्रयोग गरेर ब्लेड कोण, बेसिनको आउटलेट आकार, रनरको स्थान र गति अप्टिमाइज गर्‍यो।</p>
+      <p>यस कामको केही अंश प्रकाशित भएको छ:</p>
+      <p class="cite">Shankar Nath Pandey, Raj Kumar Chaulagain, and Bimal Pandey. &ldquo;Simulation of Propeller Runner for Cylindrical Basin of Gravitational Water Vortex Power Plant.&rdquo; <em>Advances in Engineering and Technology: An International Journal</em>, 2(1), 87&ndash;101, 2022. <a href="https://doi.org/10.3126/aet.v2i01.50461" target="_blank" rel="noopener">doi:10.3126/aet.v2i01.50461</a></p>
+      <p>यस कार्यक्रममा मैले SolidWorks र CATIA मा CAD मोडलिङ, ANSYS मा सिमुलेसन तथा विश्लेषण, र C प्रोग्रामिङजस्ता इन्जिनियरिङ उपकरणहरूमा पनि आफ्नो सीप बढाएँ। समग्रमा, पाठ्यक्रम र अनुसन्धानले मलाई शैक्षिक अनुसन्धान र वास्तविक इन्जिनियरिङ डिजाइनका लागि बलियो आधार दियो।</p></li>
+    <li><span class="when">सन् 2014 देखि 2018 · कुल प्राप्तांक 73.38%</span><h3>मेकानिकल इन्जिनियरिङमा स्नातक (BE)</h3>
+      <p>पश्चिमाञ्चल क्याम्पस, इन्जिनियरिङ अध्ययन संस्थान (IOE), त्रिभुवन विश्वविद्यालय, पोखरा</p>
+      <p>डिप्लोमापछि मैले फेरि IOE प्रवेश परीक्षा उत्तीर्ण गरेँ र पोखराको पश्चिमाञ्चल क्याम्पसमा मेकानिकल इन्जिनियरिङ स्नातकमा भर्ना भएँ। तालैतालको सहर भनेर चिनिने पोखरा फेवा तालको किनारमा छ, र सहरको ठीक पछाडि अन्नपूर्ण हिमशृंखला र माछापुच्छ्रेको चुचुरो देखिन्छ। हरेक दिन त्यो दृश्यसँगै पढ्न पाउँदा यी वर्षहरू मेरो जीवनका सबैभन्दा अविस्मरणीय वर्षहरूमध्ये बने।</p>
+      <p>चार वर्षे कार्यक्रमले मलाई सैद्धान्तिक र व्यावहारिक दुवै पक्षमा बलियो आधार दियो। पाठ्यक्रममा थर्मोडाइनामिक्स, फ्लुइड मेकानिक्स, हिट ट्रान्सफर, स्ट्रेन्थ अफ मटेरियल्स, मेकानिक्स अफ सोलिड्स, मेटलर्जी तथा मटेरियल्स, मेकानिज्म तथा मेसिन डाइनामिक्स, मेसिन कम्पोनेन्ट डिजाइन, उत्पादन प्रक्रिया, मेट्रोलोजी, कन्ट्रोल सिस्टम, कम्प्युटर-एडेड डिजाइन, नवीकरणीय ऊर्जा र अटोमोबाइल इन्जिनियरिङ समावेश थिए, साथै वर्कसप तालिम र एक महिनाको औद्योगिक अभ्यास (industrial attachment) पनि थियो।</p>
+      <p>सन् 2016 मा मैले र मेरा साथीहरूले फेवाजस्ता तालबाट जलकुम्भी र फोहोर हटाउन डिजाइन गरिएको स्वचालित ताल सफा गर्ने रोबोट SafaLake बनायौँ। <a href="https://www.youtube.com/watch?v=ybvYquL7NFE" target="_blank" rel="noopener">हाम्रो परियोजनाको भिडियो हेर्नुहोस्</a>।</p>
+      <p>सन् 2017 देखि 2018 सम्म मैले रन-अफ-रिभर प्रकारको पानीबाट चल्ने पम्प डिजाइन, निर्माण र परीक्षण गरी यसको कार्यक्षमता विश्लेषण पनि गरेँ।</p>
+      <p>यी वर्षहरूले मलाई मेकानिकल इन्जिनियरका रूपमा आकार दिए। मैले वास्तविक समस्यालाई टुक्रा-टुक्रामा बुझ्न, इन्जिनियरिङ सिद्धान्तअनुसार मोडल बनाउन, डिजाइन र विश्लेषणमार्फत विचार परीक्षण गर्न, र कक्षाकोठाबाहिर पनि काम गर्ने समाधान बनाउन सिकेँ।</p></li>
+    <li><span class="when">सन् 2010 देखि 2013 · कुल प्राप्तांक 80.19%</span><h3>अटोमोबाइल इन्जिनियरिङमा डिप्लोमा</h3>
+      <p>थापाथली क्याम्पस, इन्जिनियरिङ अध्ययन संस्थान (IOE), त्रिभुवन विश्वविद्यालय, काठमाडौं</p>
+      <p>एसएलसीपछि म इन्जिनियर बन्ने सपना बोकेर काठमाडौं आएँ। मैले प्रतिस्पर्धात्मक IOE प्रवेश परीक्षा उत्तीर्ण गरेँ, छात्रवृत्ति पाएँ, र थापाथली क्याम्पसमा अटोमोबाइल इन्जिनियरिङ डिप्लोमामा भर्ना भएँ। छवटा सेमेस्टरमध्ये पाँचवटामा म कक्षामा प्रथम भएँ।</p>
+      <p>यस कार्यक्रममा कक्षाकोठाको अध्ययनसँगै व्यावहारिक वर्कसप तालिम पनि थियो। पाठ्यक्रममा अटोमोबाइल इन्जिन, चेसिस तथा ट्रान्समिसन प्रणाली, अटो इलेक्ट्रिकल प्रणाली, सवारी साधन मर्मतसम्भार, इन्जिनियरिङ ड्रइङ र वर्कसप टेक्नोलोजी समावेश थिए।</p></li>
+    <li><span class="when">कक्षा 4 देखि 10 · एसएलसी 2010</span><h3>श्री उत्तरगंगा उच्च माध्यमिक विद्यालय, बुर्तिबाङ</h3>
+      <p>आज म जहाँ छु, त्यसको जग यही विद्यालय हो। यहाँ पनि म असल विद्यार्थीका रूपमा रहेँ र सन् 2010 मा विद्यालय छाडपत्र (SLC) परीक्षा 76% अंकसहित उत्तीर्ण गरेँ, जुन त्यस वर्ष विद्यालयकै सबैभन्दा उच्च अंक थियो।</p></li>
+    <li><span class="when">नर्सरीदेखि कक्षा 3</span><h3>श्री सरस्वती प्राथमिक विद्यालय, भब्रेटा</h3>
+      <p>मेरो शिक्षा मेरै गाउँको सरकारी प्राथमिक विद्यालयबाट सुरु भयो। यहीँ मैले क, ख, ग देखि A, B, C सम्मका पहिला अक्षर सिकेँ र पछिका सबै कुराको जग बसालेँ। म प्रायः कक्षामा प्रथम र कहिलेकाहीँ दोस्रो हुन्थेँ।</p></li>
+  </ul>
+</section>
+
+<section id="experience" hidden>
+  <h2>व्यावसायिक अनुभव</h2>
+  <ul class="timeline">
+    <li><span class="when">नोभेम्बर 2021 देखि डिसेम्बर 2024</span><h3>मेकानिकल इन्जिनियर</h3>
+      <p class="org">नेपाल विद्युत् प्राधिकरण, ऊर्जा, जलस्रोत तथा सिँचाइ मन्त्रालय, नेपाल</p>
+      <p>लोक सेवा आयोगद्वारा सञ्चालित प्रतिस्पर्धात्मक परीक्षा उत्तीर्ण गरेपछि म नोभेम्बर 2021 (वि.सं. 2078) मा नेपाल विद्युत् प्राधिकरणमा मेकानिकल इन्जिनियरका रूपमा नियुक्त भएँ। त्यस समय यो देशकै सबैभन्दा माग भएका इन्जिनियरिङ पदमध्ये एक थियो।</p>
+      <p>मेरो काम मुख्यतः विद्युत् उत्पादनमा केन्द्रित थियो, र मैले नेपालका विभिन्न जलविद्युत् तथा विद्युत् केन्द्रहरूमा सेवा गरेँ। म हाइड्रोमेकानिकल प्रणाली र हाइड्रोमेकानिकल तथा इलेक्ट्रोमेकानिकल दुवै कम्पोनेन्टको निवारक (preventive) तथा सुधारात्मक मर्मतसम्भारको जिम्मेवार थिएँ। मर्मतसम्भारबाहेक मैले प्लान्ट सञ्चालन, ऊर्जा तथा माग प्रक्षेपण, र कर्मचारी तथा तिनको कार्यभारको तालिका व्यवस्थापनमा पनि भूमिका खेलेँ। यस क्रममा मैले प्रसारण, वितरण र ऊर्जा व्यापारको पनि अनुभव पाएँ।</p>
+      <p>नेपालको जलविद्युत् क्षेत्रमा काम गर्नु भनेको हिमालयकै विशेष चुनौतीहरूसँग जुध्नु हो। नेपालका अधिकांश आयोजना नदी प्रवाही (run-of-river) प्रकारका छन्, र नदीको पानीले बोकेर ल्याउने मसिनो बालुवा र घर्षणकारी गेगरले टर्बाइन तथा अन्य हाइड्रोमेकानिकल पार्टहरू खियाउँछ। यो क्षरण हाम्रा प्लान्टहरूको प्रमुख समस्यामध्ये एक थियो, जसका लागि हरेक वर्ष प्लान्ट बन्द गरेर मर्मत गर्नुपर्थ्यो। यसले ठूलो आर्थिक नोक्सानी निम्त्याउँथ्यो र लोड सन्तुलन गर्न पनि कठिन बनाउँथ्यो। नदीको बहाव पनि मौसमअनुसार धेरै फरक हुन्छ। सुक्खा याममा यो करिब एक तिहाइमा झर्न सक्छ, जसले विद्युत् अभाव निम्त्याउँछ, भने वर्षायाममा यति धेरै बढ्छ कि अतिरिक्त ऊर्जा खेर जान्छ। बजारको माग सन्तुलन गर्दै आर्थिक नोक्सानी न्यूनतम राख्न कुन टर्बाइन चलाउने र पूर्ण वा आंशिक लोडमा चलाउने भन्ने निर्णय हामीले गर्नुपर्थ्यो। निजी उत्पादकहरूसँगको विद्युत् खरिद सम्झौता (PPA) टेक-अर-पे (take-or-pay) प्रकारको भएकाले ऊर्जाको बजार नहुँदा पनि भुक्तानी गर्नुपर्थ्यो, जसले आपूर्ति, माग र लागतबीच सन्तुलन मिलाउने काम अत्यन्त प्राविधिक बनाउँथ्यो।</p>
+      <p>यस भूमिकाले मेरो प्राविधिक र व्यवस्थापकीय दुवै सीप बलियो बनायो। यसले विद्युत् गृहमा इन्जिनियर र व्यवस्थापकको दोहोरो भूमिकाबारे स्पष्ट बुझाइ दियो, कठिन वातावरणमा काम गर्ने आत्मविश्वास बढायो, र नेपाल तथा विश्वमा ऊर्जा बजार कसरी चल्छ भन्ने बुझाइ गहिरो बनायो। यस अवधिमा मैले NEA इन्डक्सन तालिम (डिसेम्बर 2021), जलविद्युत् उपकरणको सञ्चालन तथा मर्मतसम्भार तालिम (फेब्रुअरी 2022), र सार्वजनिक खरिदसम्बन्धी e-GP तालिम (मार्च 2022) पूरा गरेँ।</p>
+    </li>
+    <li><span class="when">डिसेम्बर 2018 देखि डिसेम्बर 2021</span><h3>सिनियर टेक्निसियन</h3>
+      <p class="org">नेपाल वायुसेवा निगम, संस्कृति, पर्यटन तथा नागरिक उड्डयन मन्त्रालय, नेपाल</p>
+      <p>मैले डिसेम्बर 2018 (वि.सं. 2075) मा नेपालको राष्ट्रिय ध्वजावाहक नेपाल वायुसेवा निगमबाट आफ्नो व्यावसायिक करियर सुरु गरेँ। यो लिखित परीक्षा र अन्तर्वार्ताको अत्यन्त प्रतिस्पर्धात्मक छनोट प्रक्रियाबाट पूर्ति हुने सरकारी पद हो, र मैले हरेक चरण सफलतापूर्वक पार गरेर छनोट भएँ।</p>
+      <p>सिनियर टेक्निसियनका रूपमा म IATA र ICAO मापदण्डअनुसार A देखि D सम्मका श्रेणीका विमानका ग्राउन्ड सपोर्ट उपकरणहरूको मर्मतसम्भारको जिम्मेवार थिएँ। मेरो दैनिक काममा हाई लोडर, पुसब्याक टग र टो बार, यात्रु चढ्ने सिँढी, बेल्ट लोडर, ग्राउन्ड पावर युनिट, एयर कन्डिसनिङ तथा एयर स्टार्ट युनिट, र ब्यागेज तथा कार्गो कार्टजस्ता मोटरयुक्त र मोटररहित दुवै उपकरणको निरीक्षण समावेश थियो। मैले विमानसँग प्रत्यक्ष जोडिने उपकरण र वरपरका सञ्चालनलाई सहयोग गर्ने उपकरणका समस्या पहिचान गरी समाधान गरेँ, जसले हरेक विमान समयमै उडानका लागि तयार हुन मद्दत गर्‍यो।</p>
+      <p>यस भूमिकाले मलाई उड्डयन क्षेत्रमा बहुमूल्य व्यावहारिक अनुभव दियो। अन्तर्राष्ट्रिय प्राविधिक विज्ञहरूसँग काम गर्दा विश्वव्यापी उड्डयन अभ्यासबारे मेरो ज्ञान फराकिलो भयो, र व्यस्त उडान समयमा उपकरणका समस्या सम्हाल्दा शान्त रहन, दबाबमा सही निर्णय गर्न र टोलीको सदस्यका रूपमा प्रभावकारी काम गर्न सिकेँ। मैले विमानको ग्राउन्ड ह्यान्डलिङ उपकरणको सञ्चालन तथा मर्मतसम्भार (जुलाई 2019) र उड्डयन सुरक्षा तथा विमानस्थलको निषेधित क्षेत्र सचेतना (जुन 2019) सम्बन्धी तालिम पनि पूरा गरेँ।</p>
+    </li>
+  </ul>
+</section>
+
+<section id="journey" hidden>
+  <h2>अमेरिकासम्मको यात्रा</h2>
+  <p class="lead">नयाँ अनुसन्धानका मामलामा म निकै उत्साही व्यक्ति हुँ। मलाई विभिन्न क्षेत्रका समस्याहरू खोज्न मन पर्छ, र म सधैँ सिक्न र अघि बढ्न दिने भूमिकाको खोजीमा रहन्छु। नेपालको उड्डयन र ऊर्जा क्षेत्रमा केही वर्ष काम गरेपछि मैले त्यो जिज्ञासालाई अझ अगाडि बढाउँदै अन्तर्राष्ट्रिय स्तरमा अनुसन्धानमा योगदान दिन चाहेँ।</p>
+  <p class="lead">त्यही निर्णयले मलाई सन् 2025 मा अमेरिका ल्यायो, जब म फ्लोरिडाको ट्याम्पास्थित साउथ फ्लोरिडा विश्वविद्यालयमा इन्डस्ट्रियल एन्ड म्यानेजमेन्ट सिस्टम्स इन्जिनियरिङको पीएचडी कार्यक्रममा आबद्ध भएँ। मेरो यात्राले मलाई हिमालयको एक दुर्गम गाउँदेखि समुद्र सतहमा रहेको तटीय सहरसम्म, र क्षेत्रमा व्यावहारिक इन्जिनियरिङदेखि अप्टिमाइजेसन र आर्टिफिसियल इन्टेलिजेन्सको अनुसन्धानसम्म ल्याएको छ।</p>
+  <p class="lead"><a class="place" href="https://www.usf.edu/engineering/imse/people/phd-students.aspx" target="_blank" rel="noopener">USF IMSE पीएचडी विद्यार्थीहरू</a></p>
+</section>
+
+<section id="research" hidden>
+  <h2>अनुसन्धान रुचि र दिशा</h2>
+  <p class="lead">मेरो अनुसन्धानले आर्टिफिसियल इन्टेलिजेन्स र मेसिन लर्निङलाई अप्टिमाइजेसनमा जोड्छ। म अपरेसन्स रिसर्चमा काम गर्छु, विशेषगरी ठूला स्तरका अप्टिमाइजेसन समस्या र बहुउद्देश्यीय अप्टिमाइजेसनमा, जहाँ एकै समयमा धेरै लक्ष्यहरू सन्तुलन गर्नुपर्छ।</p>
+  <p class="lead">मेरो हालको कामको एउटा प्रमुख प्रयोग क्यान्सर उपचार हो। हाम्रो अनुसन्धानको लक्ष्य छोटो समयमै उच्च गुणस्तरको उपचार योजना तयार गर्दै हरेक बिरामीलाई सबैभन्दा सुरक्षित र सटीक डोज दिनु हो। यो यस्तो समस्या हो जहाँ राम्रो अप्टिमाइजेसनले बिरामीको जीवनमा वास्तविक फरक पार्न सक्छ।</p>
+  <p class="eyebrow">मुख्य क्षेत्रहरू</p>
+  <ul class="chips"><li>अप्टिमाइजेसनमा AI र मेसिन लर्निङ</li><li>अपरेसन्स रिसर्च</li><li>ठूला स्तरको अप्टिमाइजेसन</li><li>बहुउद्देश्यीय अप्टिमाइजेसन</li><li>क्यान्सर उपचार योजना</li></ul>
+  <p class="eyebrow">सहकार्य</p>
+  <p class="lead">म नयाँ अनुसन्धानमा सहकार्य गर्न सधैँ खुसी हुन्छु। तपाईं सम्बन्धित समस्यामा काम गर्दै हुनुहुन्छ भने निःसंकोच <a href="#contact" style="color:var(--blue)">सम्पर्क गर्नुहोस्</a>।</p>
+</section>
+
+<section id="interests" hidden>
+  <h2>रुचिहरू</h2>
+  <p class="lead">अनुसन्धानबाहेक मलाई यात्रा गर्न र नयाँ ठाउँ घुम्न मन पर्छ। नेपालका पहाडमा हुर्किएकाले मलाई प्रकृति र बाहिरी गतिविधि सधैँ प्रिय लाग्छ, र मौका मिल्दा म हाइकिङ र पौडी खेल्न रमाउँछु। म खेलकुदको पनि ठूलो प्रेमी हुँ, र फुटबल, भलिबल र क्रिकेट मेरा मनपर्ने खेल हुन्।</p>
+  <p class="lead">मलाई व्यावसायिक र व्यक्तिगत दुवै वृत्तमा मानिसहरूसँग सम्बन्ध बनाउन मन पर्छ। म सबैलाई सम्मान गर्नुपर्छ भन्ने विश्वास गर्छु, र फरक पृष्ठभूमिका मानिसहरूसँग भेट्दा बन्ने मित्रता र सिकाइलाई मूल्यवान ठान्छु।</p>
+  <ul class="chips"><li>यात्रा</li><li>हाइकिङ</li><li>पौडी</li><li>फुटबल</li><li>भलिबल</li><li>क्रिकेट</li><li>मानिसहरूसँग भेटघाट</li></ul>
+</section>
+
+<section id="media" hidden>
+  <h2>मिडिया</h2>
+  <p class="lead">मेरो काम पछ्याउनुहोस् र अनलाइन मसँग जोडिनुहोस्।</p>
+  <ul class="links">
+    <li><a href="https://www.linkedin.com/in/shankar-pandey-3418b9236" target="_blank" rel="noopener">LinkedIn</a><span>व्यावसायिक प्रोफाइल र अपडेट</span></li>
+    <li><a href="https://scholar.google.com/citations?user=_ulJkX8AAAAJ&amp;hl=en" target="_blank" rel="noopener">Google Scholar</a><span>प्रकाशन र साइटेसन</span></li>
+    <li><a href="https://www.instagram.com/pandey.shankar22/" target="_blank" rel="noopener">Instagram</a><span>@pandey.shankar22</span></li>
+    <li><a href="https://www.facebook.com/shankar.pandey.108" target="_blank" rel="noopener">Facebook</a><span>facebook.com/shankar.pandey.108</span></li>
+  </ul>
+</section>
+
+<section id="events" hidden>
+  <h2>कार्यक्रमहरू</h2>
+  <p class="lead">सम्मेलन, प्रस्तुति, उपलब्धि र मेरो यात्राका अन्य महत्त्वपूर्ण क्षणहरू।</p>
+  <div class="events" data-events></div>
+  <p class="empty" data-events-empty>नयाँ कार्यक्रम र तस्बिरहरू छिट्टै यहाँ देखिनेछन्।</p>
+</section>
+<section id="awards" hidden>
+  <h2>पुरस्कार तथा छात्रवृत्ति</h2>
+  <ul class="timeline">
+    <li><span class="when">सन् 2010 देखि 2022</span><h3>सरकारी छात्रवृत्ति, इन्जिनियरिङ अध्ययन संस्थान</h3><p>त्रिभुवन विश्वविद्यालय, इन्जिनियरिङ अध्ययन संस्थान (IOE) मार्फत डिप्लोमा, स्नातक र स्नातकोत्तर तहका लागि सरकारी छात्रवृत्ति प्राप्त।</p></li>
+    <li><span class="when">2010</span><h3>विद्यालय छाडपत्र (SLC)</h3><p>76% अंकसहित उत्तीर्ण, जुन त्यस वर्ष श्री उत्तरगंगा उच्च माध्यमिक विद्यालयकै सबैभन्दा उच्च अंक थियो।</p></li>
+  </ul>
+</section>
+<section id="publications" hidden>
+  <h2>प्रकाशनहरू</h2>
+  <p class="lead">थापाथली क्याम्पस, IOE मा स्नातकोत्तर अध्ययनका क्रममा गरिएको समकक्षी-समीक्षित (peer-reviewed) अनुसन्धान।</p>
+  <article class="paper">
+    <p class="paper-meta">जर्नल लेख · 2022</p>
+    <h3>Simulation of Propeller Runner for Cylindrical Basin of Gravitational Water Vortex Power Plant</h3>
+    <p class="paper-authors"><strong>Shankar Nath Pandey</strong>, Raj Kumar Chaulagain, and Bimal Pandey</p>
+    <p class="paper-venue"><em>Advances in Engineering and Technology: An International Journal</em>, Vol. 2, No. 1, pp. 87&ndash;101, December 2022</p>
+    <p>गुरुत्वीय पानी भोर्टेक्स विद्युत् गृहले करिब 0.7 देखि 2 मिटरसम्मको धेरै कम हेडमा पानीको भुमरीबाट बिजुली उत्पादन गर्छ र यसलाई कम मर्मतसम्भार चाहिन्छ। यस अध्ययनमा हामीले नयाँ प्रोपेलर-प्रकारको रनर र मिल्दो बेलनाकार बेसिन डिजाइन गर्‍यौँ, र CFD मा आधारित अप्टिमाइजेसन प्रयोग गरेर ब्लेड कोण, बेसिन आउटलेटको व्यास, रनरको स्थान र घुम्ने गति मिलायौँ। 43&deg; ब्लेड कोण, 175 मिमि आउटलेट (बेसिन व्यासको 20%), र बेसिनको उचाइको करिब 65% मा रनर राखिएको अप्टिमाइज्ड डिजाइनले 40 rpm मा करिब 23.6% दक्षता हासिल गर्‍यो।</p>
+    <div class="open-actions">
+      <a class="pill" href="https://www.nepjol.info/index.php/aet/article/view/50461" target="_blank" rel="noopener">लेख पढ्नुहोस्</a>
+      <a class="pill ghost" href="https://doi.org/10.3126/aet.v2i01.50461" target="_blank" rel="noopener">DOI: 10.3126/aet.v2i01.50461</a>
+    </div>
+  </article>
+  <p class="lead" style="margin-top:20px">मेरा सबै प्रकाशन <a href="https://scholar.google.com/citations?user=_ulJkX8AAAAJ&amp;hl=en" target="_blank" rel="noopener" style="color:var(--blue)">Google Scholar</a> मा हेर्नुहोस्।</p>
+</section>
+<section id="cv" hidden>
+  <h2>CV</h2>
+  <p class="lead">मेरो पृष्ठभूमिको सारांश। पूरा विवरणका लागि मेरो पूर्ण CV खोल्नुहोस्।</p>
+  <div class="open-actions"><a class="pill" href="Shankar_Pandey_CV.pdf" target="_blank" rel="noopener">पूर्ण CV खोल्नुहोस् (PDF)</a></div>
+  <p class="eyebrow">एक नजरमा</p>
+  <ul class="points">
+    <li>पीएचडी विद्यार्थी, इन्डस्ट्रियल एन्ड म्यानेजमेन्ट सिस्टम्स इन्जिनियरिङ, साउथ फ्लोरिडा विश्वविद्यालय (2025 देखि हालसम्म)</li>
+    <li>एमएससी, मेकानिकल डिजाइन एन्ड म्यानुफ्याक्चरिङ, थापाथली क्याम्पस, IOE (2020 देखि 2022)</li>
+    <li>बीई, मेकानिकल इन्जिनियरिङ, पश्चिमाञ्चल क्याम्पस, IOE (2014 देखि 2018)</li>
+    <li>मेकानिकल इन्जिनियर, नेपाल विद्युत् प्राधिकरण (2021 देखि 2024)</li>
+    <li>सिनियर टेक्निसियन, नेपाल वायुसेवा निगम (2018 देखि 2021)</li>
+  </ul>
+  <p class="eyebrow">प्राविधिक सीप</p>
+  <ul class="chips"><li>Python</li><li>MATLAB</li><li>C प्रोग्रामिङ</li><li>ANSYS</li><li>SolidWorks</li><li>CATIA</li><li>AutoCAD</li><li>MS Office</li></ul>
+</section>
+<section id="contact" hidden>
+  <h2>सम्पर्क</h2>
+  <p class="lead">अनुसन्धान, इन्टर्नसिप वा सहकार्यबारे कुरा गर्न म खुसी हुनेछु।</p>
+  <p class="eyebrow">इमेल</p>
+  <p class="email"><span id="email-text">shankar38@usf.edu</span> <button type="button" id="copy-email" class="copy">कपी</button></p>
+  <p class="eyebrow">अन्य माध्यम</p>
+  <ul class="links">
+    <li><a href="https://www.linkedin.com/in/shankar-pandey-3418b9236" target="_blank" rel="noopener">LinkedIn</a><span>linkedin.com/in/shankar-pandey-3418b9236</span></li>
+    <li><a href="https://scholar.google.com/citations?user=_ulJkX8AAAAJ&amp;hl=en" target="_blank" rel="noopener">Google Scholar</a><span>प्रकाशन र साइटेसन</span></li>
+    <li><a href="https://www.instagram.com/pandey.shankar22/" target="_blank" rel="noopener">Instagram</a><span>@pandey.shankar22</span></li>
+    <li><a href="https://www.facebook.com/shankar.pandey.108" target="_blank" rel="noopener">Facebook</a><span>facebook.com/shankar.pandey.108</span></li>
+    <li><a href="https://github.com/shankarpandey2025" target="_blank" rel="noopener">GitHub</a><span>github.com/shankarpandey2025</span></li>
+  </ul>
+</section>
+</template>
+
+<script>
+/* =========================================================
+   EVENTS: add new events here (newest first).
+   1. Upload photos to your GitHub repository (Add file > Upload files).
+   2. Copy the example block below, remove the // at the start of each line,
+      and fill in your details. title_ne and text_ne are the Nepali versions.
+   ---------------------------------------------------------
+   {
+     date: "2026-11-15",
+     title: "Presented my research at INFORMS Annual Meeting",
+     title_ne: "INFORMS वार्षिक सम्मेलनमा अनुसन्धान प्रस्तुत",
+     place: "Atlanta, Georgia, USA",
+     text: "A short description of the event.",
+     text_ne: "कार्यक्रमको छोटो विवरण।",
+     photos: ["photo-1.jpg", "photo-2.jpg"]
+   },
+   ========================================================= */
+var EVENTS = [
+  {
+    date: "2025-10",
+    title: "Presented my research at the 2025 INFORMS Annual Meeting",
+    title_ne: "सन् 2025 को INFORMS वार्षिक सम्मेलनमा अनुसन्धान प्रस्तुत",
+    place: "Georgia World Congress Center, Atlanta, Georgia, USA",
+    text: "The INFORMS Annual Meeting is one of the largest conferences in operations research and analytics, bringing together more than 6,000 researchers, students, and industry professionals from around the world. The 2025 meeting was held in Atlanta, Georgia, from October 26 to 29, under the theme \u201cSmarter Decisions for a Better World.\u201d I presented my research there during the first year of my PhD. It was a valuable opportunity to share my work, receive feedback from experts, and connect with researchers working in optimization and artificial intelligence.",
+    text_ne: "INFORMS वार्षिक सम्मेलन अपरेसन्स रिसर्च र एनालिटिक्स क्षेत्रको सबैभन्दा ठूला सम्मेलनमध्ये एक हो, जसमा विश्वभरका 6,000 भन्दा बढी अनुसन्धानकर्ता, विद्यार्थी र उद्योग क्षेत्रका विज्ञहरू सहभागी हुन्छन्। सन् 2025 को सम्मेलन अक्टोबर 26 देखि 29 सम्म जर्जियाको एटलान्टामा \u201cSmarter Decisions for a Better World\u201d (राम्रो संसारका लागि अझ बुद्धिमानी निर्णय) भन्ने मूल विषयमा सम्पन्न भयो। पीएचडीको पहिलो वर्षमै मैले त्यहाँ आफ्नो अनुसन्धान प्रस्तुत गरेँ। यो आफ्नो काम साझा गर्ने, विज्ञहरूबाट सुझाव लिने, र अप्टिमाइजेसन तथा आर्टिफिसियल इन्टेलिजेन्समा काम गर्ने अनुसन्धानकर्ताहरूसँग जोडिने बहुमूल्य अवसर थियो।",
+    photos: ["informs-2025-atlanta.jpg"]
+  }
+];
+</script>
 <script>
 (function(){
-  var ids=[].map.call(document.querySelectorAll("main > section"),function(s){return s.id});
+  var main=document.querySelector("main");
+  var EN=main.innerHTML;
+  var NE=document.getElementById("tpl-ne").innerHTML;
+  var PHOTO=main.querySelector(".photo img").getAttribute("src");
+  var ids=[].map.call(main.querySelectorAll(":scope > section"),function(s){return s.id});
+  var LIVE="https://shankarpandey2025.github.io/";
+  var cur="about", lang="en";
   function show(id){
     if(ids.indexOf(id)<0) id="about";
-    ids.forEach(function(x){document.getElementById(x).hidden=(x!==id)});
+    cur=id;
+    ids.forEach(function(x){var el=document.getElementById(x); if(el) el.hidden=(x!==id)});
     document.querySelectorAll("#menu a").forEach(function(a){
       if(a.getAttribute("href")==="#"+id){a.setAttribute("aria-current","page");a.scrollIntoView({block:"nearest",inline:"nearest"})}
       else a.removeAttribute("aria-current");
     });
     window.scrollTo(0,0);
   }
+  function renderEvents(){
+    var box=main.querySelector("[data-events]"), empty=main.querySelector("[data-events-empty]");
+    if(!box) return;
+    var list=(window.EVENTS||[]).slice();
+    empty.hidden=list.length>0;
+    box.innerHTML="";
+    var months=lang==="ne"?["जनवरी","फेब्रुअरी","मार्च","अप्रिल","मे","जुन","जुलाई","अगस्ट","सेप्टेम्बर","अक्टोबर","नोभेम्बर","डिसेम्बर"]:["January","February","March","April","May","June","July","August","September","October","November","December"];
+    list.forEach(function(ev){
+      var card=document.createElement("article"); card.className="event";
+      var d=String(ev.date||"").split("-");
+      var ds=d.length===3?(months[+d[1]-1]+" "+(+d[2])+", "+d[0]):d.length===2?(months[+d[1]-1]+" "+d[0]):(ev.date||"");
+      var add=function(tag,cls,txt){if(!txt) return; var el=document.createElement(tag); el.className=cls; el.textContent=txt; card.appendChild(el)};
+      add("p","event-date",ds);
+      add("h3","",lang==="ne"&&ev.title_ne?ev.title_ne:ev.title);
+      add("p","event-place",ev.place);
+      add("p","event-text",lang==="ne"&&ev.text_ne?ev.text_ne:ev.text);
+      if(ev.photos&&ev.photos.length){
+        var g=document.createElement("div"); g.className="event-photos"+(ev.photos.length===1?" single":"");
+        ev.photos.forEach(function(src){
+          var a=document.createElement("a"); a.href=src; a.target="_blank"; a.rel="noopener";
+          var im=document.createElement("img"); im.src=src; im.loading="lazy"; im.alt=ev.title||"";
+          a.appendChild(im); g.appendChild(a);
+        });
+        card.appendChild(g);
+      }
+      box.appendChild(card);
+    });
+  }
+  function setLang(l,keep){
+    lang=l;
+    main.innerHTML=(l==="ne")?NE:EN;
+    if(l==="ne"){var im=main.querySelector("img[data-photo]"); if(im) im.src=PHOTO;}
+    document.documentElement.lang=l;
+    document.querySelectorAll("#menu a").forEach(function(a){
+      if(!a.dataset.en) a.dataset.en=a.textContent;
+      a.textContent=(l==="ne")?a.dataset.ne:a.dataset.en;
+    });
+    document.getElementById("brand").innerHTML=(l==="ne")?'शंकर <span>पाण्डे</span>':'Shankar <span>Pandey</span>';
+    document.getElementById("lang-label").textContent=(l==="ne")?"भाषा":"Language";
+    document.getElementById("lang").value=l;
+    try{localStorage.setItem("site-lang",l)}catch(_){}
+    renderEvents();
+    show(keep?cur:cur);
+  }
   document.addEventListener("click",function(e){
+    var cb=e.target.closest("#copy-email");
+    if(cb){
+      var t=document.getElementById("email-text").textContent;
+      var fallback=function(){var r=document.createRange();r.selectNodeContents(document.getElementById("email-text"));var sel=getSelection();sel.removeAllRanges();sel.addRange(r);cb.textContent=(lang==="ne")?"छानियो":"Selected"};
+      try{navigator.clipboard.writeText(t).then(function(){cb.textContent=(lang==="ne")?"कपी भयो":"Copied"},fallback)}catch(_){fallback()}
+      return;
+    }
     var a=e.target.closest('a[href^="#"]'); if(!a) return;
     e.preventDefault();
     var id=a.getAttribute("href").slice(1);
     try{history.replaceState(null,"","#"+id)}catch(_){}
     show(id);
   });
-  window.addEventListener("hashchange",function(){show(location.hash.slice(1))});
-  show(location.hash.slice(1));
-  var cb=document.getElementById("copy-email");
-  cb.addEventListener("click",function(){
-    var t=document.getElementById("email-text").textContent;
-    var done=function(){cb.textContent="Copied"};
-    var fallback=function(){var r=document.createRange();r.selectNodeContents(document.getElementById("email-text"));var sel=getSelection();sel.removeAllRanges();sel.addRange(r);cb.textContent="Selected"};
-    try{navigator.clipboard.writeText(t).then(done,fallback)}catch(_){fallback()}
+  document.getElementById("lang").addEventListener("change",function(){
+    var v=this.value;
+    if(v==="en"||v==="ne"){setLang(v,true);return}
+    this.value=lang;
+    var base=/github\.io$|shankarpandey\.com$/.test(location.hostname)?location.origin+"/":LIVE;
+    var a=document.createElement("a");
+    a.href="https://translate.google.com/translate?sl=en&tl="+encodeURIComponent(v)+"&u="+encodeURIComponent(base);
+    a.target="_blank"; a.rel="noopener";
+    document.body.appendChild(a); a.click(); a.remove();
   });
+  window.addEventListener("hashchange",function(){show(location.hash.slice(1))});
+  cur=location.hash.slice(1)||"about";
+  var saved="en"; try{saved=localStorage.getItem("site-lang")||"en"}catch(_){}
+  if(saved==="ne") setLang("ne"); else {renderEvents(); show(cur);}
 })();
 </script>
 
